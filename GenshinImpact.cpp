@@ -7,8 +7,13 @@ class Creature{
         int hp;
         int maxhp;
         int atk;
+        bool isalive;
     protected:
-        virtual void die();
+        virtual void diemessage()=0;
+        void die(){
+            this -> isalive = false;
+            diemessage();
+        }
     public:
         Creature(string name,int maxhp,int atk);
         string getname(){
@@ -23,7 +28,9 @@ class Creature{
         int getmaxhp(){
             return this -> maxhp;
         }
-        
+        bool getisalive(){
+            return this -> isalive;
+        }
         void sethp(int hp){
             if(hp > this->maxhp){
                 hp = this->maxhp;
@@ -35,74 +42,110 @@ class Creature{
         void setatk(int atk){
             this->atk = atk;
         }
-
 };
 Creature :: Creature(string name,int maxhp,int atk){
     this->name=name;
     this->maxhp=maxhp;
     this->atk=atk;
     this->hp=maxhp;
+    this->isalive=true;
 } 
-
 class Traveler;
 class Monster : public Creature{
     public:
         Monster(string name,int maxhp,int atk) : Creature(name,maxhp,atk){}
         void attack(Traveler* t);
-        void die();
+    protected:
+        void diemessage();
     
 };
-void Monster :: attack(Traveler* t){
-    cout << (*t).getname() << "は" << this->getname() << "から" << this->getatk() <<"のダメージをうけた！\n";
-    (*t).sethp((*t).gethp()-this->getatk());
-}
-void Monster :: die(){
-    cout << this->getname() << "を倒した！\n";
-}
-
-class Monster;
+class Slime : public Monster{
+    public:
+        Slime(string name,int maxhp,int atk) : Monster(name,maxhp,atk){}
+};
+class Flime : public Monster{
+    private:
+        int attackedcount;
+    public:
+        int getattackedcount(){
+            return this->attackedcount;
+        }
+        void setattackedcount(int attackedcount){
+            this->attackedcount = attackedcount;
+        }
+        Flime(string name,int maxhp,int atk) : Monster(name,maxhp,atk){}
+};
 class Traveler : public Creature{
     public:
         Traveler(string name,int maxhp, int atk) : Creature(name,maxhp, atk){}
         void attack(Monster* m);
-        void die();
+        void attack(Flime* f);
+    protected:
+        void diemessage();
 };
-void Traveler :: attack(Monster* m){
-    cout << this->getname() << "は" << (*m).getname() << "に" << this->getatk() <<"のダメージをあたえた！\n";
-    (*m).sethp((*m).gethp()-this->getatk());
+void Monster :: attack(Traveler* t){
+    if(!(this->getisalive())){
+        return;
+    }
+    cout << t->getname() << "は" << this->getname() << "から" << this->getatk() <<"のダメージをうけた！\n";
+    t->sethp(t->gethp()-this->getatk());
 }
-void Traveler :: die(){
+void Monster :: diemessage(){
+    cout << this->getname() << "を倒した！\n";
+}
+void Traveler :: attack(Monster* m){
+    if(!(this->getisalive())){
+        return;
+    }else if(!(m->getisalive())){
+        return;
+    }
+    cout << this->getname() << "は" << m->getname() << "に" << this->getatk() <<"のダメージをあたえた！\n";
+    m->sethp(m->gethp()-this->getatk());
+}
+void Traveler :: attack(Flime* f){
+    f->setattackedcount(f->getattackedcount()+1);
+    if(f->getattackedcount()%2 == 0){
+        cout << this->getname() << "は" << f->getname() << "に" << this->getatk() <<"のダメージをあたえた！\n";
+        f->sethp(f->gethp()-this->getatk());
+    }else{
+        cout << this->getname() << "は" << f->getname() << "に" << "攻撃をよけられてしまった！\n";
+    }
+
+}
+void Traveler :: diemessage(){
     cout << this->getname() << "は力尽きた\n";
 }
-
-
 class Healer : public Traveler{
     public:
         Healer(string name,int maxhp,int atk) : Traveler(name,maxhp,atk){}
         void heal(Traveler* ts);
 };
-
 void Healer::heal(Traveler* ts){
+    if(!(this->getisalive())){
+        return;
+    }
     for(int i=0;i<4;i++){
-        if(ts[i].gethp()+10 <= ts[i].getmaxhp()){
-            cout << ts[i].getname() << "は十分に回復されているようだ" << endl;
-            i++;
+        if(ts[i].gethp()+10 >= ts[i].getmaxhp()){
+            cout << ts[i].getname() << "は疲れていないようだ" << endl;
+            
             continue;
         }
         cout << ts[i].getname() << "は体力が10回復した!" << endl;
         ts[i].sethp(ts[i].gethp()+10);
-        i++;
     }
-    
 }
 int main(){
-
-    Healer h("バーバラ",2000,100);
-    Monster m("スライム",1000,20);
-    h.attack(&m);
-    m.attack(&h);
-    h.heal(&h);
-
-    
+    Healer b("バーバラ",2000,100);
+    Traveler h("蛍",2000,200);
+    Healer j("ジン",2300,150);
+    Traveler g("ガイア",1800,300);
+    Traveler t[4] = {b,h,j,g};
+    Slime s("スライム",1000,200);
+    Flime f("フライム",2000,100);
+    h.attack(&f);
+    h.attack(&f);
+    h.attack(&f);
+    h.attack(&f);
+    j.heal(t);
     return 0;
 }
