@@ -137,15 +137,50 @@ void Healer::heal(Traveler* ts){
 int main(){
     Healer b("バーバラ",2000,100);
     Traveler h("蛍",2000,200);
-    Healer j("ジン",2300,150);
+    Healer j("レザー",2300,150);
     Traveler g("ガイア",1800,300);
     Traveler t[4] = {b,h,j,g};
     Slime s("スライム",1000,200);
     Flime f("フライム",2000,100);
-    h.attack(&f);
-    h.attack(&f);
-    h.attack(&f);
-    h.attack(&f);
-    j.heal(t);
+    Monster m[2] = {s,f};
+    string name;
+    string action;
+    string attackedmonster;
+    while(true){
+        cout << "だれがたたかう？" << endl;
+        for(int i=0;i<4;i++){
+            if(t[i].getisalive()){
+            cout << t[i].getname() << endl;
+            }
+        }
+        cin >> name;
+        for(int i=0;i<4;i++){
+            if(t[i].getname() == name){
+                cout << name << "はなにをする？\n" << "攻撃\n";
+                if(i==0){
+                    cout << "回復\n";
+                }
+                cin >> action;
+                if(action == "攻撃"){
+                    cout << "どのモンスターを攻撃する？\n";
+                    for(int j=0;j<2;j++){
+                        if(m[j].getisalive()){
+                        cout << m[j].getname() << endl;
+                        }
+                    }   
+                    cin >> attackedmonster;
+                    for(int k=0;k<2;k++){
+                        if(m[k].getname() == attackedmonster){
+                            t[i].attack(&m[k]);
+                        }
+                    }
+                }
+                if(action == "回復"){
+                    b.heal(t);
+                }
+            }
+        }
+    }
+
     return 0;
 }
