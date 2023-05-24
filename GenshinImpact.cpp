@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <typeinfo>
 using namespace std;
 class Creature{
     private:
@@ -146,6 +147,7 @@ int main(){
     string name;
     string action;
     string attackedmonster;
+    cout << typeid(&j) <<endl;
     while(true){
         cout << "‚¾‚ê‚ª‚½‚½‚©‚¤H" << endl;
         for(int i=0;i<4;i++){
@@ -157,7 +159,7 @@ int main(){
         for(int i=0;i<4;i++){
             if(t[i].getname() == name){
                 cout << name << "‚Í‚È‚É‚ð‚·‚éH\n" << "UŒ‚\n";
-                if(i==0){
+                if(typeid(&(t[i])) == typeid(Healer)){
                     cout << "‰ñ•œ\n";
                 }
                 cin >> action;
@@ -167,7 +169,7 @@ int main(){
                         if(m[j].getisalive()){
                         cout << m[j].getname() << endl;
                         }
-                    }   
+                    }
                     cin >> attackedmonster;
                     for(int k=0;k<2;k++){
                         if(m[k].getname() == attackedmonster){
@@ -184,3 +186,4 @@ int main(){
 
     return 0;
 }
+
