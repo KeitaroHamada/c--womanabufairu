@@ -66,7 +66,7 @@ class Slime : public Monster{
 };
 class Flime : public Monster{
     private:
-        int attackedcount＝0;
+        int attackedcount=0;
     public:
         int getattackedcount(){
             return this->attackedcount;
