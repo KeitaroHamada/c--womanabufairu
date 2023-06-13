@@ -24,6 +24,7 @@ class Creature{
             return this -> hp;
         }
         int getatk(){
+            
             return this -> atk;
         }
         int getmaxhp(){
@@ -43,6 +44,11 @@ class Creature{
         void setatk(int atk){
             this->atk = atk;
         }
+        void showActions(){
+            string attackname = "攻撃";
+            cout << attackname << endl;
+        }
+            
 };
 Creature :: Creature(string name,int maxhp,int atk){
     this->name=name;
@@ -120,6 +126,11 @@ class Healer : public Traveler{
     public:
         Healer(string name,int maxhp,int atk) : Traveler(name,maxhp,atk){}
         void heal(Traveler* ts);
+        void showActions(){
+            string attackname = "攻撃";
+            string healname = "回復";
+            cout << attackname << ',' << healname << endl;
+        }
 };
 void Healer::heal(Traveler* ts){
     if(!(this->getisalive())){
@@ -148,7 +159,6 @@ int main(){
     string action;
     string attackedmonster;
     while(true){
-        Healer x[4];
         cout << "だれがたたかう？" << endl;
         for(int i=0;i<4;i++){
             if(t[i].getisalive()){
@@ -158,11 +168,7 @@ int main(){
         cin >> name;
         for(int i=0;i<4;i++){
             if(t[i].getname() == name){
-                cout << name << "はなにをする？\n" << "攻撃\n";
-                if(typeid(t[i]) == typeid(Healer)){
-                    x[i] = (Healer)t[i];
-                    cout << "回復\n";
-                }
+                cout << name << "はなにをする？\n" << t[i].showActions();
                 cin >> action;
                 if(action == "攻撃"){
                     cout << "どのモンスターを攻撃する？\n";
@@ -179,7 +185,8 @@ int main(){
                     }
                 }
                 if(action == "回復"){
-                    x[i].heal(t);
+                    Healer* x = dynamic_cast<Healer*>(&t[i]);
+                    x->heal(t);
                 }
             }
         }
