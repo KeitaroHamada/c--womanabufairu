@@ -148,6 +148,7 @@ int main(){
     string action;
     string attackedmonster;
     while(true){
+        Healer x[4];
         cout << "だれがたたかう？" << endl;
         for(int i=0;i<4;i++){
             if(t[i].getisalive()){
@@ -159,6 +160,7 @@ int main(){
             if(t[i].getname() == name){
                 cout << name << "はなにをする？\n" << "攻撃\n";
                 if(typeid(t[i]) == typeid(Healer)){
+                    x[i] = (Healer)t[i];
                     cout << "回復\n";
                 }
                 cin >> action;
@@ -177,7 +179,7 @@ int main(){
                     }
                 }
                 if(action == "回復"){
-                    t[i].heal(t);
+                    x[i].heal(t);
                 }
             }
         }
