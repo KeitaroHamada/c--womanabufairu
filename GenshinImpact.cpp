@@ -66,7 +66,7 @@ class Slime : public Monster{
 };
 class Flime : public Monster{
     private:
-        int attackedcount;
+        int attackedcountï¼0;
     public:
         int getattackedcount(){
             return this->attackedcount;
@@ -88,11 +88,11 @@ void Monster :: attack(Traveler* t){
     if(!(this->getisalive())){
         return;
     }
-    cout << t->getname() << "‚Í" << this->getname() << "‚©‚ç" << this->getatk() <<"‚Ìƒ_ƒ[ƒW‚ğ‚¤‚¯‚½I\n";
+    cout << t->getname() << "ã¯" << this->getname() << "ã‹ã‚‰" << this->getatk() <<"ã®ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ã†ã‘ãŸï¼\n";
     t->sethp(t->gethp()-this->getatk());
 }
 void Monster :: diemessage(){
-    cout << this->getname() << "‚ğ“|‚µ‚½I\n";
+    cout << this->getname() << "ã‚’å€’ã—ãŸï¼\n";
 }
 void Traveler :: attack(Monster* m){
     if(!(this->getisalive())){
@@ -100,21 +100,21 @@ void Traveler :: attack(Monster* m){
     }else if(!(m->getisalive())){
         return;
     }
-    cout << this->getname() << "‚Í" << m->getname() << "‚É" << this->getatk() <<"‚Ìƒ_ƒ[ƒW‚ğ‚ ‚½‚¦‚½I\n";
+    cout << this->getname() << "ã¯" << m->getname() << "ã«" << this->getatk() <<"ã®ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ã‚ãŸãˆãŸï¼\n";
     m->sethp(m->gethp()-this->getatk());
 }
 void Traveler :: attack(Flime* f){
     f->setattackedcount(f->getattackedcount()+1);
     if(f->getattackedcount()%2 == 0){
-        cout << this->getname() << "‚Í" << f->getname() << "‚É" << this->getatk() <<"‚Ìƒ_ƒ[ƒW‚ğ‚ ‚½‚¦‚½I\n";
+        cout << this->getname() << "ã¯" << f->getname() << "ã«" << this->getatk() <<"ã®ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ã‚ãŸãˆãŸï¼\n";
         f->sethp(f->gethp()-this->getatk());
     }else{
-        cout << this->getname() << "‚Í" << f->getname() << "‚É" << "UŒ‚‚ğ‚æ‚¯‚ç‚ê‚Ä‚µ‚Ü‚Á‚½I\n";
+        cout << this->getname() << "ã¯" << f->getname() << "ã«" << "æ”»æ’ƒã‚’ã‚ˆã‘ã‚‰ã‚Œã¦ã—ã¾ã£ãŸï¼\n";
     }
 
 }
 void Traveler :: diemessage(){
-    cout << this->getname() << "‚Í—Ís‚«‚½\n";
+    cout << this->getname() << "ã¯åŠ›å°½ããŸ\n";
 }
 class Healer : public Traveler{
     public:
@@ -127,29 +127,28 @@ void Healer::heal(Traveler* ts){
     }
     for(int i=0;i<4;i++){
         if(ts[i].gethp()+10 >= ts[i].getmaxhp()){
-            cout << ts[i].getname() << "‚Í”æ‚ê‚Ä‚¢‚È‚¢‚æ‚¤‚¾" << endl;
+            cout << ts[i].getname() << "ã¯ç–²ã‚Œã¦ã„ãªã„ã‚ˆã†ã " << endl;
             
             continue;
         }
-        cout << ts[i].getname() << "‚Í‘Ì—Í‚ª10‰ñ•œ‚µ‚½!" << endl;
+        cout << ts[i].getname() << "ã¯ä½“åŠ›ãŒ10å›å¾©ã—ãŸ!" << endl;
         ts[i].sethp(ts[i].gethp()+10);
     }
 }
 int main(){
-    Healer b("ƒo[ƒoƒ‰",2000,100);
-    Traveler h("Œu",2000,200);
-    Healer j("ƒŒƒU[",2300,150);
-    Traveler g("ƒKƒCƒA",1800,300);
+    Healer b("ãƒãƒ¼ãƒãƒ©",2000,100);
+    Traveler h("è›",2000,200);
+    Healer j("ãƒ¬ã‚¶ãƒ¼",2300,150);
+    Traveler g("ã‚¬ã‚¤ã‚¢",1800,300);
     Traveler t[4] = {b,h,j,g};
-    Slime s("ƒXƒ‰ƒCƒ€",1000,200);
-    Flime f("ƒtƒ‰ƒCƒ€",2000,100);
+    Slime s("ã‚¹ãƒ©ã‚¤ãƒ ",1000,200);
+    Flime f("ãƒ•ãƒ©ã‚¤ãƒ ",2000,100);
     Monster m[2] = {s,f};
     string name;
     string action;
     string attackedmonster;
-    cout << typeid(&j) <<endl;
     while(true){
-        cout << "‚¾‚ê‚ª‚½‚½‚©‚¤H" << endl;
+        cout << "ã ã‚ŒãŒãŸãŸã‹ã†ï¼Ÿ" << endl;
         for(int i=0;i<4;i++){
             if(t[i].getisalive()){
             cout << t[i].getname() << endl;
@@ -158,13 +157,13 @@ int main(){
         cin >> name;
         for(int i=0;i<4;i++){
             if(t[i].getname() == name){
-                cout << name << "‚Í‚È‚É‚ğ‚·‚éH\n" << "UŒ‚\n";
-                if(typeid(&(t[i])) == typeid(Healer)){
-                    cout << "‰ñ•œ\n";
+                cout << name << "ã¯ãªã«ã‚’ã™ã‚‹ï¼Ÿ\n" << "æ”»æ’ƒ\n";
+                if(typeid(t[i]) == typeid(Healer)){
+                    cout << "å›å¾©\n";
                 }
                 cin >> action;
-                if(action == "UŒ‚"){
-                    cout << "‚Ç‚Ìƒ‚ƒ“ƒXƒ^[‚ğUŒ‚‚·‚éH\n";
+                if(action == "æ”»æ’ƒ"){
+                    cout << "ã©ã®ãƒ¢ãƒ³ã‚¹ã‚¿ãƒ¼ã‚’æ”»æ’ƒã™ã‚‹ï¼Ÿ\n";
                     for(int j=0;j<2;j++){
                         if(m[j].getisalive()){
                         cout << m[j].getname() << endl;
@@ -177,8 +176,8 @@ int main(){
                         }
                     }
                 }
-                if(action == "‰ñ•œ"){
-                    b.heal(t);
+                if(action == "å›å¾©"){
+                    t[i].heal(t);
                 }
             }
         }
